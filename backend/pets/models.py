@@ -22,7 +22,7 @@ class Pet(models.Model):
     pet_type = models.ForeignKey(PetType, on_delete=models.SET_NULL, null=True)
     animal_breed = models.CharField(max_length=100)
     description = models.TextField(blank=True)
-    photo = models.ImageField(upload_to='pets/')
+    photo = models.ImageField(upload_to='pets/', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
