@@ -1,9 +1,9 @@
 # reservations/serializers.py
 from rest_framework import serializers
 from .models import Reservation, ReservationStatus
-from pets.serializers import PetSerializer # Reutilizamos el PetSerializer de la app pets
-from pets.models import Pet # ¡IMPORTANTE: Debes importar el modelo Pet para la excepción!
-from datetime import date # Para validación de fechas
+from pets.serializers import PetSerializer
+from pets.models import Pet # Necesario para Pet.DoesNotExist
+from datetime import date
 
 class ReservationStatusSerializer(serializers.ModelSerializer):
     class Meta:
@@ -16,7 +16,7 @@ class ReservationSerializer(serializers.ModelSerializer):
     status = ReservationStatusSerializer(read_only=True)
 
     pet_id = serializers.UUIDField(write_only=True, required=True)
-    status_id = serializers.UUIDField(write_only=True, required=False) # OK que sea opcional
+    status_id = serializers.UUIDField(write_only=True, required=False)
 
     class Meta:
         model = Reservation
@@ -45,7 +45,7 @@ class ReservationSerializer(serializers.ModelSerializer):
         user = self.context['request'].user
         try:
             pet = user.pets.get(id=pet_id)
-        except Pet.DoesNotExist: # ¡CORRECCIÓN AQUÍ! Era 'pet.DoesNotExist', debería ser 'Pet.DoesNotExist'
+        except Pet.DoesNotExist:
             raise serializers.ValidationError({"pet_id": "La mascota seleccionada no pertenece a este usuario."})
 
         if status_id:
@@ -77,7 +77,7 @@ class ReservationSerializer(serializers.ModelSerializer):
             try:
                 new_pet = user.pets.get(id=pet_id)
                 instance.pet = new_pet
-            except Pet.DoesNotExist: 
+            except Pet.DoesNotExist:
                 raise serializers.ValidationError({"pet_id": "La mascota seleccionada no pertenece a este usuario."})
 
         if status_id:
@@ -87,8 +87,14 @@ class ReservationSerializer(serializers.ModelSerializer):
             except ReservationStatus.DoesNotExist:
                 raise serializers.ValidationError({"status_id": "Estado de reserva inválido."})
 
-
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
         instance.save()
         return instance
+
+# ¡NUEVA CLASE PARA EL SERIALIZER DE ANALÍTICAS!
+class ReservationCountSerializer(serializers.Serializer):
+    # Estos campos mapearán a los alias usados en el método .values() en la vista
+    id = serializers.UUIDField(source='item_id')      # Mapea 'item_id' a 'id' en la salida
+    name = serializers.CharField(source='item_name') # Mapea 'item_name' a 'name' en la salida
+    total_reservations = serializers.IntegerField()
