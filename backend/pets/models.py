@@ -16,7 +16,7 @@ class PetType(models.Model):
 
 class Pet(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='pets')
     name = models.CharField(max_length=100)
     age = models.PositiveIntegerField()
     pet_type = models.ForeignKey(PetType, on_delete=models.SET_NULL, null=True)
