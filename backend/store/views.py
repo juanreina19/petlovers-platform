@@ -23,6 +23,28 @@ class ProductViewSet(viewsets.ModelViewSet): # ¡ModelViewSet para CRUD completo
     queryset = Product.objects.all().select_related('category') # ¡Usamos 'category' aquí!
     serializer_class = ProductSerializer
 
+    def get_queryset(self):
+        # Primero, obtenemos el queryset base (todos los productos con la relación de categoría precargada)
+        queryset = Product.objects.all().select_related('category')
+
+        # Si no es un administrador, solo mostramos productos activos y con stock > 0
+        if not self.request.user.is_staff:
+            queryset = queryset.filter(stock__gt=0) # Asumo que "activos" se refiere a stock > 0
+
+        # --- Lógica de Filtrado ---
+
+        # Filtrar por nombre (búsqueda parcial, insensible a mayúsculas/minúsculas)
+        name = self.request.query_params.get('name', None)
+        if name is not None:
+            queryset = queryset.filter(name__icontains=name) # __icontains para búsqueda insensible a mayúsculas/minúsculas
+
+        # Filtrar por categoría (usando el ID de la categoría)
+        category_id = self.request.query_params.get('category_id', None)
+        if category_id is not None:
+            queryset = queryset.filter(category__id=category_id)
+
+        return queryset
+
     def get_permissions(self):
         # Permisos dinámicos:
         # - list y retrieve son públicos (AllowAny)
