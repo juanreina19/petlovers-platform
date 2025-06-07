@@ -67,7 +67,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
         # Incluye los campos que el usuario puede ver y actualizar.
         # Excluye 'password', 'is_staff', 'is_superuser', etc., por seguridad.
         fields = ['id', 'username', 'email', 'first_name', 'last_name', 'phone_number', 'role']
-        read_only_fields = ['id', 'username', 'email', 'role'] # Campos que no deberían ser modificados por el usuario
+        read_only_fields = ['id', 'username', 'role'] # Campos que no deberían ser modificados por el usuario
 
     def to_representation(self, instance):
         # Sobreescribir para mostrar el nombre del rol en lugar de su ID/UUID
