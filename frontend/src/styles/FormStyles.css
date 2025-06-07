@@ -1,0 +1,154 @@
+.form-container {
+    background-color: var(--bg-white);
+    padding: 30px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-md);
+    width: 100%;
+    max-width: 600px;
+    margin: 40px auto;
+}
+
+.form-title {
+    color: var(--primary-purple);
+    font-size: 2em;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.form-grid {
+    display: grid;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: var(--text-color-dark);
+}
+
+.form-input,
+.form-textarea,
+.form-select,
+.form-file-input {
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-sm);
+    font-size: 1em;
+    width: 100%;
+    box-sizing: border-box;
+    /* Incluye padding y borde en el width */
+}
+
+.form-textarea {
+    resize: vertical;
+    /* Permite redimensionar verticalmente */
+}
+
+.form-file-input {
+    padding: 0;
+    /* Ajuste para el input de archivo */
+}
+
+.current-image-preview {
+    margin-top: 15px;
+    text-align: center;
+}
+
+.current-image-preview p {
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: var(--text-color-medium);
+}
+
+.image-preview {
+    max-width: 150px;
+    max-height: 150px;
+    object-fit: cover;
+    border-radius: var(--border-radius-sm);
+    border: 1px solid var(--border-color);
+    margin: 0 auto;
+    display: block;
+    /* Para centrar la imagen */
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.form-submit-button,
+.form-cancel-button {
+    padding: 12px 25px;
+    border: none;
+    border-radius: var(--border-radius-sm);
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.form-submit-button {
+    background-color: var(--primary-purple);
+    color: white;
+}
+
+.form-submit-button:hover:not(:disabled) {
+    background-color: var(--dark-purple);
+    transform: translateY(-2px);
+}
+
+.form-submit-button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+.form-cancel-button {
+    background-color: var(--gray-light);
+    color: var(--text-color-dark);
+}
+
+.form-cancel-button:hover:not(:disabled) {
+    background-color: var(--gray-medium);
+    transform: translateY(-2px);
+}
+
+.form-loading,
+.form-error,
+.form-success-message,
+.form-error-message {
+    text-align: center;
+    padding: 15px;
+    border-radius: var(--border-radius-sm);
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.form-loading {
+    background-color: #e0f7fa;
+    color: #00796b;
+}
+
+.form-error {
+    background-color: #ffebee;
+    color: #d32f2f;
+    border: 1px solid #ef9a9a;
+}
+
+.form-success-message {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    border: 1px solid #a5d6a7;
+}
+
+.form-error-message {
+    background-color: #ffebee;
+    color: #d32f2f;
+    border: 1px solid #ef9a9a;
+}

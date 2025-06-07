@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     'users',
     'pets',
     'reservations',
@@ -52,7 +55,9 @@ AUTH_USER_MODEL = 'users.User'
 
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -90,6 +95,18 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# DATABASE_URL = os.environ.get('DATABASE_URL')
+
+# if DATABASE_URL:
+#     DATABASES['default'] = dj_database_url.parse(DATABASE_URL, conn_max_age=600) # conn_max_age para conexiones persistentes
+
+#     # Si estás usando la base de datos de Render, necesitas configurar el certificado SSL
+#     # Render suele requerir SSL por defecto. Asegúrate de que tu URL tenga ?sslmode=require
+#     # o puedes añadir esto:
+#     DATABASES['default']['OPTIONS'] = {
+#         'sslmode': 'require',
+#     }
 
 
 REST_FRAMEWORK = {
@@ -137,6 +154,40 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS', # <--- ¡Asegúrate de que OPTIONS esté aquí!
+    'PATCH',
+    'POST',
+    'PUT',
+]
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization', # <--- ¡ESTO ES CRUCIAL!
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken', # Si lo usas
+    'x-requested-with',
+]
+
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:5173",  # para Vite
+#     "http://127.0.0.1:5173"  # también si accedes así
+# ]
+
+# Opcional: Deshabilitar el almacenamiento de estáticos de WhiteNoise en desarrollo
+# para que las actualizaciones sean más rápidas
+WHITENOISE_USE_MIMETYPE_FILE = True # Habilita la detección de tipo de archivo para servir correctamente
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
