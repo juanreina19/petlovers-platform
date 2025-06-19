@@ -77,8 +77,8 @@ const PetDetail = () => {
                 <div style={styles.petDetailContent}>
                     <img src={pet.image} alt={pet.name} style={styles.petDetailImage} />
                     <div style={styles.petInfoGroup}>
-                        <p style={styles.detailText}><strong>Especie:</strong> {pet.species}</p>
-                        <p style={styles.detailText}><strong>Raza:</strong> {pet.breed}</p>
+                        <p style={styles.detailText}><strong>Especie:</strong> {pet.pet_type.name}</p>
+                        <p style={styles.detailText}><strong>Raza:</strong> {pet.animal_breed}</p>
                         <p style={styles.detailText}><strong>Edad:</strong> {pet.age} años</p>
                         <p style={styles.detailText}><strong>Descripción:</strong> {pet.description}</p>
                     </div>
